@@ -47,6 +47,8 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.kermit)
             implementation(libs.multiplatform.settings.no.arg)
+            implementation(libs.compose.material.icons.core)
+            implementation(libs.compose.material.icons.extended)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
