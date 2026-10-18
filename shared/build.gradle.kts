@@ -45,6 +45,8 @@ kotlin {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+            implementation(libs.kermit)
+            implementation(libs.multiplatform.settings.no.arg)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
