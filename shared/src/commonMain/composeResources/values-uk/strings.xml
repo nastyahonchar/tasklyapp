@@ -16,4 +16,26 @@
     <string name="onboarding_3_tag">ГОТОВІ ДО УСПІХУ</string>
     <string name="onboarding_3_title">Керуйте своїм днем</string>
     <string name="onboarding_3_desc">Ставте чіткі пріоритети, встигайте до дедлайнів і балансуйте навчання зі спокійною ясністю.</string>
+
+    <string name="onboarding_4_tag">ПРІОРИТЕТИ ТА ТЕГИ</string>
+    <string name="onboarding_4_title">Фокус на головному</string>
+    <string name="onboarding_4_desc">Позначайте завдання високим, середнім або низьким пріоритетом і групуйте їх за темами: навчання, проєкти, зустрічі.</string>
+
+    <string name="onboarding_5_tag">НА БУДЬ-ЯКОМУ ПРИСТРОЇ</string>
+    <string name="onboarding_5_title">Завдання завжди поруч</string>
+    <string name="onboarding_5_desc">Користуйтеся Taskly на смартфоні з Android або на десктопі з однаковим спокійним інтерфейсом.</string>
+
+    <string name="greeting">Доброго ранку, %1$s</string>
+    <string name="daily_focus">ФОКУС ДНЯ</string>
+    <string name="completed_of">%1$d з %2$d виконано</string>
+    <string name="filter_all">Усі</string>
+    <string name="filter_pending">В процесі</string>
+    <string name="filter_completed">Виконані</string>
+    <string name="active_tasks">АКТИВНІ ЗАВДАННЯ</string>
+    <string name="completed_today">ВИКОНАНО СЬОГОДНІ</string>
+    <string name="nav_tasks">Завдання</string>
+    <string name="nav_calendar">Календар</string>
+    <string name="nav_statistics">Статистика</string>
+    <string name="nav_settings">Параметри</string>
+    <string name="show_onboarding">Показати вступ ще раз</string>
 </resources>
