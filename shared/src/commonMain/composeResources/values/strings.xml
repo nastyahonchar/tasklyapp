@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Taskly</string>
+    <string name="skip">Skip</string>
+    <string name="next">Next</string>
+    <string name="back">Back</string>
+    <string name="get_started">Get Started</string>
+
+    <string name="onboarding_1_tag">EFFORTLESS PLANNING</string>
+    <string name="onboarding_1_title">Simplify Your Daily Tasks</string>
+    <string name="onboarding_1_desc">Organize, prioritize, and accomplish your work with a distraction-free student workflow.</string>
+
+    <string name="onboarding_2_tag">HABIT TRACKING</string>
+    <string name="onboarding_2_title">Track Daily Momentum</string>
+    <string name="onboarding_2_desc">Watch your consistency grow with real-time completion analytics and weekly study streaks.</string>
+
+    <string name="onboarding_3_tag">READY TO ACHIEVE</string>
+    <string name="onboarding_3_title">Master Your Day</string>
+    <string name="onboarding_3_desc">Set focused priorities, crush deadlines, and balance coursework with calm clarity.</string>
+</resources>

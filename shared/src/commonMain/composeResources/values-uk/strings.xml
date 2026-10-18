@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Taskly</string>
+    <string name="skip">Пропустити</string>
+    <string name="next">Далі</string>
+    <string name="back">Назад</string>
+    <string name="get_started">Розпочати</string>
+
+    <string name="onboarding_1_tag">ЛЕГКЕ ПЛАНУВАННЯ</string>
+    <string name="onboarding_1_title">Спростіть щоденні завдання</string>
+    <string name="onboarding_1_desc">Організовуйте, розставляйте пріоритети та виконуйте справи без зайвих відволікань.</string>
+
+    <string name="onboarding_2_tag">ВІДСТЕЖЕННЯ ЗВИЧОК</string>
+    <string name="onboarding_2_title">Відстежуйте прогрес щодня</string>
+    <string name="onboarding_2_desc">Спостерігайте, як зростає ваша регулярність, завдяки аналітиці виконання та тижневим серіям.</string>
+
+    <string name="onboarding_3_tag">ГОТОВІ ДО УСПІХУ</string>
+    <string name="onboarding_3_title">Керуйте своїм днем</string>
+    <string name="onboarding_3_desc">Ставте чіткі пріоритети, встигайте до дедлайнів і балансуйте навчання зі спокійною ясністю.</string>
+</resources>
