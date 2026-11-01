@@ -1,38 +1,44 @@
 package com.example.taskly
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import co.touchlab.kermit.Logger
-import com.example.taskly.data.AppSettings
-import com.example.taskly.ui.home.HomeScreen
-import com.example.taskly.ui.onboarding.OnboardingScreen
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.ui.NavDisplay
+import com.example.taskly.di.appModule
+import com.example.taskly.navigation.Route
+import com.example.taskly.ui.auth.AuthRoute
+import com.example.taskly.ui.home.HomeRoute
+import com.example.taskly.ui.onboarding.OnboardingRoute
 import com.example.taskly.ui.theme.TasklyTheme
-
-private const val ALWAYS_SHOW_ONBOARDING = false
+import org.koin.compose.KoinApplication
 
 @Composable
 fun App() {
-    TasklyTheme {
-        val appSettings = remember { AppSettings() }
-        var onboardingDone by remember {
-            mutableStateOf(!ALWAYS_SHOW_ONBOARDING && appSettings.onboardingCompleted)
-        }
+    KoinApplication(application = { modules(appModule) }) {
+        TasklyTheme {
+            val backStack = remember { mutableStateListOf<Route>(Route.Home) }
 
-        if (!onboardingDone) {
-            OnboardingScreen(onFinish = {
-                appSettings.onboardingCompleted = true
-                onboardingDone = true
-                Logger.i("App") { "Onboarding completed" }
-            })
-        } else {
-            HomeScreen(onResetOnboarding = {
-                appSettings.onboardingCompleted = false
-                onboardingDone = false
-                Logger.i("App") { "Onboarding reset" }
-            })
+            fun replaceWith(route: Route) {
+                backStack.clear()
+                backStack.add(route)
+            }
+
+            NavDisplay(
+                backStack = backStack,
+                onBack = { if (backStack.size > 1) backStack.removeAt(backStack.lastIndex) },
+                entryProvider = entryProvider<Route> {
+                    entry<Route.Home> {
+                        HomeRoute(onNavigateToOnboarding = { replaceWith(Route.Onboarding) })
+                    }
+                    entry<Route.Onboarding> {
+                        OnboardingRoute(onNavigateToAuth = { replaceWith(Route.Auth) })
+                    }
+                    entry<Route.Auth> {
+                        AuthRoute(onSignedIn = { replaceWith(Route.Home) })
+                    }
+                },
+            )
         }
     }
 }
