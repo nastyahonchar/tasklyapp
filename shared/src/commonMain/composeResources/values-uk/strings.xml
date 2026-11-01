@@ -38,4 +38,17 @@
     <string name="nav_statistics">Статистика</string>
     <string name="nav_settings">Параметри</string>
     <string name="show_onboarding">Показати вступ ще раз</string>
+
+    <string name="auth_title">З поверненням</string>
+    <string name="auth_subtitle">Увійдіть, щоб продовжити планувати день</string>
+    <string name="username_label">Логін</string>
+    <string name="password_label">Пароль</string>
+    <string name="sign_in">Увійти</string>
+    <string name="show_password">Показати пароль</string>
+    <string name="hide_password">Сховати пароль</string>
+    <string name="error_username_empty">Введіть логін</string>
+    <string name="error_username_short">Щонайменше 3 символи</string>
+    <string name="error_username_chars">Лише літери, цифри, крапка й підкреслення</string>
+    <string name="error_password_empty">Введіть пароль</string>
+    <string name="error_password_short">Щонайменше 6 символів</string>
 </resources>
