@@ -11,7 +11,7 @@ import com.example.taskly.ui.home.HomeScreen
 import com.example.taskly.ui.onboarding.OnboardingScreen
 import com.example.taskly.ui.theme.TasklyTheme
 
-private const val ALWAYS_SHOW_ONBOARDING = true
+private const val ALWAYS_SHOW_ONBOARDING = false
 
 @Composable
 fun App() {
