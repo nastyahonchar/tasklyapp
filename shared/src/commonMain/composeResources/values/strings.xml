@@ -48,7 +48,7 @@
     <string name="hide_password">Hide password</string>
     <string name="error_username_empty">Enter your username</string>
     <string name="error_username_short">At least 3 characters</string>
-    <string name="error_username_chars">Only letters, digits, dot and underscore</string>
+    <string name="error_username_chars">Only letters, digits and . _ - @</string>
     <string name="error_password_empty">Enter your password</string>
     <string name="error_password_short">At least 6 characters</string>
 </resources>

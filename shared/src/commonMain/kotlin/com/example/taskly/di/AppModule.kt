@@ -11,20 +11,25 @@ import com.example.taskly.ui.auth.AuthViewModel
 import com.example.taskly.ui.home.HomeViewModel
 import com.example.taskly.ui.onboarding.OnboardingViewModel
 import com.russhwolf.settings.Settings
-import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
-val appModule = module {
+val dataModule = module {
     single<Settings> { Settings() }
-    single { AppSettings(get()) }
-    single<OnboardingRepository> { OnboardingRepositoryImpl(get()) }
+    singleOf(::AppSettings)
+    singleOf(::OnboardingRepositoryImpl) { bind<OnboardingRepository>() }
+}
 
-    factory { IsOnboardingCompletedUseCase(get()) }
-    factory { SetOnboardingCompletedUseCase(get()) }
-    factory { ValidateUsernameUseCase() }
-    factory { ValidatePasswordUseCase() }
-
-    viewModel { OnboardingViewModel(get()) }
-    viewModel { HomeViewModel(get(), get()) }
-    viewModel { AuthViewModel(get(), get()) }
+val appModule = module {
+    includes(dataModule)
+    factoryOf(::IsOnboardingCompletedUseCase)
+    factoryOf(::SetOnboardingCompletedUseCase)
+    factoryOf(::ValidateUsernameUseCase)
+    factoryOf(::ValidatePasswordUseCase)
+    viewModelOf(::OnboardingViewModel)
+    viewModelOf(::HomeViewModel)
+    viewModelOf(::AuthViewModel)
 }

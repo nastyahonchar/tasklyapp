@@ -34,11 +34,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.taskly.domain.usecase.ValidationError
 import org.jetbrains.compose.resources.stringResource
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import taskly.shared.generated.resources.*
 
 @Composable
 fun AuthScreen(state: AuthState, onIntent: (AuthIntent) -> Unit) {
     val focusManager = LocalFocusManager.current
+    val keyboard = LocalSoftwareKeyboardController.current
 
     Column(
         modifier = Modifier
@@ -77,8 +80,13 @@ fun AuthScreen(state: AuthState, onIntent: (AuthIntent) -> Unit) {
             isError = state.usernameError != null,
             supportingText = { state.usernameError?.let { Text(usernameMessage(it)) } },
             shape = RoundedCornerShape(16.dp),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = ImeAction.Next),
-            keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+                capitalization = KeyboardCapitalization.None,
+                autoCorrectEnabled = false,
+                imeAction = ImeAction.Next,
+            ),
+            keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Next) }),
         )
         Spacer(Modifier.height(8.dp))
 
@@ -105,6 +113,7 @@ fun AuthScreen(state: AuthState, onIntent: (AuthIntent) -> Unit) {
             shape = RoundedCornerShape(16.dp),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = {
+                keyboard?.hide()
                 focusManager.clearFocus()
                 onIntent(AuthIntent.SignIn)
             }),
