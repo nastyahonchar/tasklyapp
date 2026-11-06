@@ -26,7 +26,10 @@ fun App() {
             onBack = { if (backStack.size > 1) backStack.removeAt(backStack.lastIndex) },
             entryProvider = entryProvider<Route> {
                 entry<Route.Home> {
-                    HomeRoute(onNavigateToOnboarding = { replaceWith(Route.Onboarding) })
+                    HomeRoute(
+                        onNavigateToOnboarding = { replaceWith(Route.Onboarding) },
+                        onNavigateToAuth = { replaceWith(Route.Auth) },
+                    )
                 }
                 entry<Route.Onboarding> {
                     OnboardingRoute(onNavigateToAuth = { replaceWith(Route.Auth) })

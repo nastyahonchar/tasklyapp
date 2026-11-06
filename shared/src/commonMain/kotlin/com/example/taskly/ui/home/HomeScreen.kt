@@ -41,8 +41,8 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
 import taskly.shared.generated.resources.*
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 
-// Тимчасові дані. У наступній лабі їх замінять дані з dummyjson
 private data class TaskItem(val title: String, val tag: String, val time: String, val done: Boolean)
 
 private val mockTasks = listOf(
@@ -53,7 +53,7 @@ private val mockTasks = listOf(
 )
 
 @Composable
-fun HomeScreen(onResetOnboarding: () -> Unit) {
+fun HomeScreen(userName: String, onResetOnboarding: () -> Unit, onSignOut: () -> Unit) {
     val active = mockTasks.filter { !it.done }
     val done = mockTasks.filter { it.done }
 
@@ -74,7 +74,7 @@ fun HomeScreen(onResetOnboarding: () -> Unit) {
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            item { HomeHeader(onResetOnboarding) }
+            item { HomeHeader(userName, onResetOnboarding, onSignOut) }
             item { FocusCard(done = done.size, total = mockTasks.size) }
             item { FilterRow(all = mockTasks.size, pending = active.size, completed = done.size) }
             item { SectionLabel("${stringResource(Res.string.active_tasks)} (${active.size})") }
@@ -86,7 +86,7 @@ fun HomeScreen(onResetOnboarding: () -> Unit) {
 }
 
 @Composable
-private fun HomeHeader(onResetOnboarding: () -> Unit) {
+private fun HomeHeader(userName: String, onResetOnboarding: () -> Unit, onSignOut: () -> Unit) {
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Box(
             Modifier.size(40.dp).clip(CircleShape).background(MaterialTheme.colorScheme.secondaryContainer),
@@ -96,12 +96,16 @@ private fun HomeHeader(onResetOnboarding: () -> Unit) {
         }
         Spacer(Modifier.width(12.dp))
         Text(
-            stringResource(Res.string.greeting, "Alex"),
+            text = if (userName.isBlank()) stringResource(Res.string.greeting_no_name)
+            else stringResource(Res.string.greeting, userName),
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.weight(1f),
         )
         IconButton(onClick = onResetOnboarding) {
             Icon(Icons.Default.Refresh, contentDescription = stringResource(Res.string.show_onboarding))
+        }
+        IconButton(onClick = onSignOut) {
+            Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = stringResource(Res.string.sign_out))
         }
     }
 }

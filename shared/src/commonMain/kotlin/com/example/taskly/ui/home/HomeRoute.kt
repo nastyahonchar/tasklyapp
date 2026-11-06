@@ -14,15 +14,17 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun HomeRoute(
     onNavigateToOnboarding: () -> Unit,
+    onNavigateToAuth: () -> Unit,
     viewModel: HomeViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.onIntent(HomeIntent.CheckOnboarding)
+        viewModel.onIntent(HomeIntent.CheckSession)
         viewModel.effects.collect { effect ->
             when (effect) {
                 HomeEffect.NavigateToOnboarding -> onNavigateToOnboarding()
+                HomeEffect.NavigateToAuth -> onNavigateToAuth()
             }
         }
     }
@@ -30,6 +32,10 @@ fun HomeRoute(
     if (state.isChecking) {
         Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background))
     } else {
-        HomeScreen(onResetOnboarding = { viewModel.onIntent(HomeIntent.ShowOnboardingAgain) })
+        HomeScreen(
+            userName = state.userName,
+            onResetOnboarding = { viewModel.onIntent(HomeIntent.ShowOnboardingAgain) },
+            onSignOut = { viewModel.onIntent(HomeIntent.SignOut) },
+        )
     }
 }
