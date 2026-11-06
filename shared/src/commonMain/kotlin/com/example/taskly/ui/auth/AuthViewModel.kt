@@ -3,6 +3,9 @@ package com.example.taskly.ui.auth
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
+import com.example.taskly.domain.common.ApiError
+import com.example.taskly.domain.common.ApiResult
+import com.example.taskly.domain.usecase.LoginUseCase
 import com.example.taskly.domain.usecase.ValidatePasswordUseCase
 import com.example.taskly.domain.usecase.ValidateUsernameUseCase
 import com.example.taskly.domain.usecase.ValidationError
@@ -20,6 +23,7 @@ data class AuthState(
     val usernameError: ValidationError? = null,
     val passwordError: ValidationError? = null,
     val isPasswordVisible: Boolean = false,
+    val isLoading: Boolean = false,
 )
 
 sealed interface AuthIntent {
@@ -31,6 +35,7 @@ sealed interface AuthIntent {
 
 sealed interface AuthEffect {
     data object NavigateToHome : AuthEffect
+    data class ShowError(val error: ApiError) : AuthEffect
 }
 
 private val log = Logger.withTag("AuthVM")
@@ -38,6 +43,7 @@ private val log = Logger.withTag("AuthVM")
 class AuthViewModel(
     private val validateUsername: ValidateUsernameUseCase,
     private val validatePassword: ValidatePasswordUseCase,
+    private val login: LoginUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(AuthState())
@@ -63,15 +69,26 @@ class AuthViewModel(
 
     private fun signIn() {
         val current = _state.value
+        if (current.isLoading) return
+
         val usernameError = validateUsername(current.username)
         val passwordError = validatePassword(current.password)
         _state.update { it.copy(usernameError = usernameError, passwordError = passwordError) }
+        if (usernameError != null || passwordError != null) return
 
-        if (usernameError == null && passwordError == null) {
-            log.i { "Sign in validated for user ${current.username.trim()}" }
-            viewModelScope.launch {
-                _effects.send(AuthEffect.NavigateToHome)
-                _state.value = AuthState()
+        viewModelScope.launch {
+            _state.update { it.copy(isLoading = true) }
+            when (val result = login(current.username.trim(), current.password)) {
+                is ApiResult.Success -> {
+                    log.i { "Signed in" }
+                    _effects.send(AuthEffect.NavigateToHome)
+                    _state.value = AuthState()
+                }
+                is ApiResult.Failure -> {
+                    log.w { "Sign in failed: ${result.error}" }
+                    _state.update { it.copy(isLoading = false) }
+                    _effects.send(AuthEffect.ShowError(result.error))
+                }
             }
         }
     }

@@ -51,4 +51,11 @@
     <string name="error_username_chars">Only letters, digits and . _ - @</string>
     <string name="error_password_empty">Enter your password</string>
     <string name="error_password_short">At least 6 characters</string>
+
+    <string name="error_invalid_credentials">Invalid username or password</string>
+    <string name="error_network">No internet connection. Please try again</string>
+    <string name="error_server">Server error. Please try again later</string>
+    <string name="error_unknown">Something went wrong</string>
+    <string name="greeting_no_name">Good morning</string>
+    <string name="sign_out">Sign out</string>
 </resources>

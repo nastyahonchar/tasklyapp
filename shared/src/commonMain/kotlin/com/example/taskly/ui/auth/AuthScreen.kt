@@ -37,98 +37,134 @@ import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import taskly.shared.generated.resources.*
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 
 @Composable
-fun AuthScreen(state: AuthState, onIntent: (AuthIntent) -> Unit) {
+fun AuthScreen(state: AuthState, snackbarHostState: SnackbarHostState, onIntent: (AuthIntent) -> Unit) {
     val focusManager = LocalFocusManager.current
     val keyboard = LocalSoftwareKeyboardController.current
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .verticalScroll(rememberScrollState())
-            .imePadding()
-            .padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        Box(
-            Modifier.size(72.dp).clip(CircleShape).background(MaterialTheme.colorScheme.secondaryContainer),
-            contentAlignment = Alignment.Center,
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        containerColor = MaterialTheme.colorScheme.background,
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .verticalScroll(rememberScrollState())
+                .imePadding()
+                .padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
         ) {
-            Icon(Icons.Default.CheckCircle, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(40.dp))
-        }
-        Spacer(Modifier.height(24.dp))
-        Text(stringResource(Res.string.auth_title), style = MaterialTheme.typography.headlineMedium, textAlign = TextAlign.Center)
-        Spacer(Modifier.height(8.dp))
-        Text(
-            stringResource(Res.string.auth_subtitle),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center,
-        )
-        Spacer(Modifier.height(32.dp))
+            Box(
+                Modifier.size(72.dp).clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.secondaryContainer),
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(
+                    Icons.Default.CheckCircle,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(40.dp)
+                )
+            }
+            Spacer(Modifier.height(24.dp))
+            Text(
+                stringResource(Res.string.auth_title),
+                style = MaterialTheme.typography.headlineMedium,
+                textAlign = TextAlign.Center
+            )
+            Spacer(Modifier.height(8.dp))
+            Text(
+                stringResource(Res.string.auth_subtitle),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center,
+            )
+            Spacer(Modifier.height(32.dp))
 
-        OutlinedTextField(
-            value = state.username,
-            onValueChange = { onIntent(AuthIntent.UsernameChanged(it)) },
-            modifier = Modifier.fillMaxWidth(),
-            label = { Text(stringResource(Res.string.username_label)) },
-            leadingIcon = { Icon(Icons.Default.Person, contentDescription = null) },
-            singleLine = true,
-            isError = state.usernameError != null,
-            supportingText = { state.usernameError?.let { Text(usernameMessage(it)) } },
-            shape = RoundedCornerShape(16.dp),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text,
-                capitalization = KeyboardCapitalization.None,
-                autoCorrectEnabled = false,
-                imeAction = ImeAction.Next,
-            ),
-            keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Next) }),
-        )
-        Spacer(Modifier.height(8.dp))
+            OutlinedTextField(
+                value = state.username,
+                onValueChange = { onIntent(AuthIntent.UsernameChanged(it)) },
+                modifier = Modifier.fillMaxWidth(),
+                label = { Text(stringResource(Res.string.username_label)) },
+                leadingIcon = { Icon(Icons.Default.Person, contentDescription = null) },
+                singleLine = true,
+                enabled = !state.isLoading,
+                isError = state.usernameError != null,
+                supportingText = { state.usernameError?.let { Text(usernameMessage(it)) } },
+                shape = RoundedCornerShape(16.dp),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    capitalization = KeyboardCapitalization.None,
+                    autoCorrectEnabled = false,
+                    imeAction = ImeAction.Next,
+                ),
+                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Next) }),
+            )
+            Spacer(Modifier.height(8.dp))
 
-        OutlinedTextField(
-            value = state.password,
-            onValueChange = { onIntent(AuthIntent.PasswordChanged(it)) },
-            modifier = Modifier.fillMaxWidth(),
-            label = { Text(stringResource(Res.string.password_label)) },
-            leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null) },
-            trailingIcon = {
-                IconButton(onClick = { onIntent(AuthIntent.TogglePasswordVisibility) }) {
-                    Icon(
-                        imageVector = if (state.isPasswordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
-                        contentDescription = stringResource(
-                            if (state.isPasswordVisible) Res.string.hide_password else Res.string.show_password
-                        ),
+            OutlinedTextField(
+                value = state.password,
+                onValueChange = { onIntent(AuthIntent.PasswordChanged(it)) },
+                modifier = Modifier.fillMaxWidth(),
+                enabled = !state.isLoading,
+                label = { Text(stringResource(Res.string.password_label)) },
+                leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null) },
+                trailingIcon = {
+                    IconButton(onClick = { onIntent(AuthIntent.TogglePasswordVisibility) }) {
+                        Icon(
+                            imageVector = if (state.isPasswordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                            contentDescription = stringResource(
+                                if (state.isPasswordVisible) Res.string.hide_password else Res.string.show_password
+                            ),
+                        )
+                    }
+                },
+                singleLine = true,
+                isError = state.passwordError != null,
+                supportingText = { state.passwordError?.let { Text(passwordMessage(it)) } },
+                visualTransformation = if (state.isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                shape = RoundedCornerShape(16.dp),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(onDone = {
+                    keyboard?.hide()
+                    focusManager.clearFocus()
+                    onIntent(AuthIntent.SignIn)
+                }),
+            )
+            Spacer(Modifier.height(24.dp))
+
+            Button(
+                onClick = {
+                    focusManager.clearFocus()
+                    onIntent(AuthIntent.SignIn)
+                },
+                enabled = !state.isLoading,
+                modifier = Modifier.fillMaxWidth().height(52.dp),
+                shape = RoundedCornerShape(26.dp),
+            ) {
+                if (state.isLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(22.dp),
+                        strokeWidth = 2.dp,
+                        color = MaterialTheme.colorScheme.onPrimary,
+                    )
+                } else {
+                    Text(
+                        stringResource(Res.string.sign_in),
+                        style = MaterialTheme.typography.labelLarge
                     )
                 }
-            },
-            singleLine = true,
-            isError = state.passwordError != null,
-            supportingText = { state.passwordError?.let { Text(passwordMessage(it)) } },
-            visualTransformation = if (state.isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-            shape = RoundedCornerShape(16.dp),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onDone = {
-                keyboard?.hide()
-                focusManager.clearFocus()
-                onIntent(AuthIntent.SignIn)
-            }),
-        )
-        Spacer(Modifier.height(24.dp))
-
-        Button(
-            onClick = {
-                focusManager.clearFocus()
-                onIntent(AuthIntent.SignIn)
-            },
-            modifier = Modifier.fillMaxWidth().height(52.dp),
-            shape = RoundedCornerShape(26.dp),
-        ) {
-            Text(stringResource(Res.string.sign_in), style = MaterialTheme.typography.labelLarge)
+            }
         }
     }
 }

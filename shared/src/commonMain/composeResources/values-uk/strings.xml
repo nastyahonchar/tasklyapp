@@ -51,4 +51,11 @@
     <string name="error_username_chars">Лише літери, цифри та . _ - @</string>
     <string name="error_password_empty">Введіть пароль</string>
     <string name="error_password_short">Щонайменше 6 символів</string>
+
+    <string name="error_invalid_credentials">Невірний логін або пароль</string>
+    <string name="error_network">Немає інтернету. Спробуйте ще раз</string>
+    <string name="error_server">Помилка сервера. Спробуйте пізніше</string>
+    <string name="error_unknown">Щось пішло не так</string>
+    <string name="greeting_no_name">Доброго ранку</string>
+    <string name="sign_out">Вийти</string>
 </resources>
