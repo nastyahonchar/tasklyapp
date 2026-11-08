@@ -52,6 +52,7 @@ class HomeViewModel(
             HomeIntent.CheckSession -> checkSession()
 
             HomeIntent.ShowOnboardingAgain -> viewModelScope.launch {
+                logout()
                 setOnboardingCompleted(false)
                 _state.value = HomeState()
                 _effects.send(HomeEffect.NavigateToOnboarding)

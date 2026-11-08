@@ -61,7 +61,6 @@ val networkModule = module {
                         BearerTokens(secureStorage.getAccessToken(), secureStorage.getRefreshToken())
                     }
                     refreshTokens {
-                        // Спрацьовує, коли сервер відповів 401 (токен прострочений)
                         val authRepository: AuthRepository = get()
                         when (authRepository.refresh()) {
                             is ApiResult.Success -> BearerTokens(
