@@ -21,6 +21,7 @@ koin = "4.2.1"
 navigation3 = "1.0.0-alpha05"
 ktor = "3.5.0"
 ksafe = "3.2.0"
+material3-adaptive = "1.2.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -58,6 +59,7 @@ ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx
 ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
 ksafe = { module = "eu.anifantakis:ksafe", version.ref = "ksafe" }
+compose-material3-adaptive = { module = "org.jetbrains.compose.material3.adaptive:adaptive", version.ref = "material3-adaptive" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
